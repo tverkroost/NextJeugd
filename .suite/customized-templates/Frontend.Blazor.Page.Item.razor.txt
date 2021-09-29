@@ -1,0 +1,131 @@
+##A0F0F5BFE21A01A4386E07EB8A77BE15##
+@page "/%%entity-name-plural-kebabcase%%"
+@attribute [Authorize(%%only-project-name%%Permissions.%%entity-name-plural%%.Default)]
+@using %%project-name%%.%%<if:IsModule>%%%%only-project-name%%.%%</if:IsModule>%%%%entity-namespace%%
+@using %%project-name%%.Localization
+@using %%solution-namespace%%%%<if:ApplicationContractsNotExists>%%%%.AppServices%%</if:ApplicationContractsNotExists>%%.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Blazorise.Components
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using %%project-name%%.Permissions
+@inject I%%entity-name-plural%%AppService %%entity-name-plural%%AppService
+@inject IStringLocalizer<%%only-project-name%%Resource> L
+@inject IAuthorizationService AuthorizationService
+@inject IUiMessageService UiMessageService
+@inject IObjectMapper ObjectMapper
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["%%entity-name-plural%%"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="%%entity-name%%SearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="%%entity-name%%SearchForm" Clicked="Get%%entity-name-plural%%Async">
+                        <Icon Name="IconName.Search" Class="mr-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="%%dto-type%%"
+                  Data="%%entity-name%%List"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="%%dto-type%%" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="%%dto-type%%" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="%%dto-type%%"
+                                          Visible="@CanEdit%%entity-name%%"
+                                          Clicked="() => OpenEdit%%entity-name%%Modal(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="%%dto-type%%"
+                                          Visible="@CanDelete%%entity-name%%"
+                                          Clicked="() => Delete%%entity-name%%Async(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               %%razor-datagrid-columns%%
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="Create%%entity-name%%Modal">
+    <ModalContent Centered="true">
+        <Form id="Create%%entity-name%%Form">
+            <ModalHeader>
+                <ModalTitle>@L["New%%entity-name%%"]</ModalTitle>
+                <CloseButton Clicked="CloseCreate%%entity-name%%Modal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@New%%entity-name%%Validations"
+                            Mode="ValidationMode.Auto"
+                            Model="@New%%entity-name%%"
+                            ValidateOnLoad="false">
+                    %%razor-modal-fields-create%%
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreate%%entity-name%%Modal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="Create%%entity-name%%Form" Clicked="Create%%entity-name%%Async" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="Edit%%entity-name%%Modal">
+    <ModalContent Centered="true">
+        <Form id="Edit%%entity-name%%Form">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEdit%%entity-name%%Modal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@Editing%%entity-name%%Validations"
+                            Mode="ValidationMode.Auto"
+                            Model="@Editing%%entity-name%%"
+                            ValidateOnLoad="false">
+                    %%razor-modal-fields-edit%%
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEdit%%entity-name%%Modal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="Create%%entity-name%%Form" Clicked="Update%%entity-name%%Async" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

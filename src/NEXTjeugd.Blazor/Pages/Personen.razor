@@ -1,0 +1,394 @@
+@page "/personen"
+@attribute [Authorize(NEXTjeugdPermissions.Personen.Default)]
+@using NEXTjeugd.Personen
+@using NEXTjeugd.Localization
+@using NEXTjeugd.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Blazorise.Components
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using NEXTjeugd.Permissions
+@inject IPersonenAppService PersonenAppService
+@inject IStringLocalizer<NEXTjeugdResource> L
+@inject IAuthorizationService AuthorizationService
+@inject IUiMessageService UiMessageService
+@inject IObjectMapper ObjectMapper
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Personen"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="PersoonSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="PersoonSearchForm" Clicked="GetPersonenAsync">
+                        <Icon Name="IconName.Search" Class="mr-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="PersoonDto"
+                  Data="PersoonList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="PersoonDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="PersoonDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="PersoonDto"
+                                          Visible="@CanEditPersoon"
+                                          Clicked="() => OpenEditPersoonModal(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="PersoonDto"
+                                          Visible="@CanDeletePersoon"
+                                          Clicked="() => DeletePersoonAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Roepnaam"
+                      Caption="@L["Roepnaam"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Voorletters"
+                      Caption="@L["Voorletters"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Tussenvoegsel"
+                      Caption="@L["Tussenvoegsel"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Achternaam"
+                      Caption="@L["Achternaam"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="BSN"
+                      Caption="@L["BSN"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Geslacht"
+                      Caption="@L["Geslacht"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Geboortedatum"
+                      Caption="@L["Geboortedatum"]">
+                  <DisplayTemplate>
+                        @context.Geboortedatum.ToShortDateString()
+                  </DisplayTemplate>
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Geboorteland"
+                      Caption="@L["Geboorteland"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="PersoonDto"
+                      Field="Type"
+                      Caption="@L["Type"]">
+              </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreatePersoonModal">
+    <ModalContent Centered="true">
+        <Form id="CreatePersoonForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewPersoon"]</ModalTitle>
+                <CloseButton Clicked="CloseCreatePersoonModal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewPersoonValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@NewPersoon"
+                            ValidateOnLoad="false">
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Roepnaam"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Roepnaam" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Voorletters"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Voorletters" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Tussenvoegsel"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Tussenvoegsel" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Achternaam"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Achternaam" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["BSN"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.BSN" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geslacht"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Geslacht" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geboortedatum"]</FieldLabel>
+                            <DateEdit TValue="DateTime" @bind-Date="@NewPersoon.Geboortedatum">
+                               <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geboorteland"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Geboorteland" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Type"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewPersoon.Type" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreatePersoonModal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreatePersoonForm" Clicked="CreatePersoonAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditPersoonModal">
+    <ModalContent Centered="true">
+        <Form id="EditPersoonForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditPersoonModal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingPersoonValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@EditingPersoon"
+                            ValidateOnLoad="false">
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Roepnaam"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Roepnaam" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Voorletters"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Voorletters" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Tussenvoegsel"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Tussenvoegsel" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Achternaam"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Achternaam" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["BSN"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.BSN" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geslacht"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Geslacht" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geboortedatum"]</FieldLabel>
+                            <DateEdit TValue="DateTime" @bind-Date="@EditingPersoon.Geboortedatum">
+                               <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Geboorteland"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Geboorteland" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Type"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditingPersoon.Type" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditPersoonModal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreatePersoonForm" Clicked="UpdatePersoonAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
