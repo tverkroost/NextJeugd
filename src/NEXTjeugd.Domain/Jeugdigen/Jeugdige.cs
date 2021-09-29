@@ -4,10 +4,11 @@ using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 using JetBrains.Annotations;
 using Volo.Abp;
+using NEXTjeugd.Personen;
 
 namespace NEXTjeugd.Jeugdigen
 {
-    public class Jeugdige : FullAuditedAggregateRoot<int>, IMultiTenant
+    public class Jeugdige :Persoon
     {
         public virtual Guid? TenantId { get; set; }
 
