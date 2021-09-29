@@ -1,4 +1,6 @@
 using NEXTjeugd.Personen;
+using NEXTjeugd.Personen;
+using NEXTjeugd.Personen;
 using NEXTjeugd.Jeugdigen;
 using NEXTjeugd.Jeugdigen;
 using NEXTjeugd.Jeugdigen;
@@ -73,6 +75,10 @@ namespace NEXTjeugd.EntityFrameworkCore
                 options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
 
                 options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
+
+                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
+
+                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
 
                 options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
 

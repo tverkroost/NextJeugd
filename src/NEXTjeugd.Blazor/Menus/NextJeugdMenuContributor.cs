@@ -100,14 +100,6 @@ namespace NEXTjeugd.Blazor.Menus
                     requiredPermissionName: NEXTjeugdPermissions.Jeugdigen.Default)
             );
 
-            context.Menu.AddItem(
-                new ApplicationMenuItem(
-                    NEXTjeugdMenus.Personen,
-                    l["Menu:Personen"],
-                    url: "/personen",
-                    icon: "fa fa-file-alt",
-                    requiredPermissionName: NEXTjeugdPermissions.Personen.Default)
-            );
             return Task.CompletedTask;
         }
     }

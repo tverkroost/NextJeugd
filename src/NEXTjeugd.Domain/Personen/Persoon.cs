@@ -7,7 +7,7 @@ using Volo.Abp;
 
 namespace NEXTjeugd.Personen
 {
-    public class Persoon : FullAuditedAggregateRoot<int>, IMultiTenant
+    public abstract class Persoon : FullAuditedAggregateRoot<int>, IMultiTenant
     {
         public virtual Guid? TenantId { get; set; }
 

@@ -22,7 +22,7 @@ namespace NEXTjeugd.Permissions
             jeugdigePermission.AddChild(NEXTjeugdPermissions.Jeugdigen.Edit, L("Permission:Edit"));
             jeugdigePermission.AddChild(NEXTjeugdPermissions.Jeugdigen.Delete, L("Permission:Delete"));
 
-            var persoonPermission = myGroup.AddPermission(NEXTjeugdPermissions.Personen.Default, L("Permission:Personen"));
+            var persoonPermission = myGroup.AddPermission(NEXTjeugdPermissions.Personen.Default, L("Permission:Personen"), MultiTenancySides.Tenant);
             persoonPermission.AddChild(NEXTjeugdPermissions.Personen.Create, L("Permission:Create"));
             persoonPermission.AddChild(NEXTjeugdPermissions.Personen.Edit, L("Permission:Edit"));
             persoonPermission.AddChild(NEXTjeugdPermissions.Personen.Delete, L("Permission:Delete"));

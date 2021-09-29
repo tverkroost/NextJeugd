@@ -97,8 +97,20 @@ namespace NEXTjeugd.EntityFrameworkCore
             //    //...
             //});
 
-            builder.Entity<Persoon>().HasDiscriminator<string>("Discriminator")
-                     .HasValue<Jeugdige>("Jeugdige");
+            builder.Entity<Persoon>(b =>
+    {
+        b.ToTable(NEXTjeugdConsts.DbTablePrefix + "Personen", NEXTjeugdConsts.DbSchema);
+        b.ConfigureByConvention();
+        b.Property(x => x.TenantId).HasColumnName(nameof(Persoon.TenantId));
+        b.Property(x => x.Roepnaam).HasColumnName(nameof(Persoon.Roepnaam)).IsRequired();
+        b.Property(x => x.Voorletters).HasColumnName(nameof(Persoon.Voorletters));
+        b.Property(x => x.Tussenvoegsel).HasColumnName(nameof(Persoon.Tussenvoegsel));
+        b.Property(x => x.Achternaam).HasColumnName(nameof(Persoon.Achternaam));
+        b.Property(x => x.BSN).HasColumnName(nameof(Persoon.BSN));
+        b.Property(x => x.Geslacht).HasColumnName(nameof(Persoon.Geslacht));
+        b.Property(x => x.Geboortedatum).HasColumnName(nameof(Persoon.Geboortedatum));
+        b.Property(x => x.Geboorteland).HasColumnName(nameof(Persoon.Geboorteland));
+    });
         }
     }
 }

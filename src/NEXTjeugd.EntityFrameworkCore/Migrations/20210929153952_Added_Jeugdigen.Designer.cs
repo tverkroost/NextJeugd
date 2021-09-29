@@ -11,7 +11,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NEXTjeugd.Migrations
 {
     [DbContext(typeof(NEXTjeugdDbContext))]
-    [Migration("20210929150709_Added_Jeugdigen")]
+    [Migration("20210929153952_Added_Jeugdigen")]
     partial class Added_Jeugdigen
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,12 @@ namespace NEXTjeugd.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Achternaam")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Achternaam");
 
                     b.Property<string>("BSN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("BSN");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -67,13 +69,16 @@ namespace NEXTjeugd.Migrations
                         .HasColumnName("ExtraProperties");
 
                     b.Property<DateTime>("Geboortedatum")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Geboortedatum");
 
                     b.Property<string>("Geboorteland")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Geboorteland");
 
                     b.Property<string>("Geslacht")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Geslacht");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -90,21 +95,25 @@ namespace NEXTjeugd.Migrations
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("Roepnaam")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Roepnaam");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
                     b.Property<string>("Tussenvoegsel")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Tussenvoegsel");
 
                     b.Property<string>("Voorletters")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Voorletters");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Personen");
+                    b.ToTable("AppPersonen");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Persoon");
                 });

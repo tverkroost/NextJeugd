@@ -10,8 +10,6 @@ namespace NEXTjeugd.Jeugdigen
 {
     public class Jeugdige :Persoon
     {
-        public virtual Guid? TenantId { get; set; }
-
         public virtual int Woonsituatie { get; set; }
 
         public virtual int SamenstellingHuishouden { get; set; }

@@ -1,9 +1,10 @@
+using NEXTjeugd.Personen;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace NEXTjeugd.Jeugdigen
 {
-    public class JeugdigeCreateDto
+    public class JeugdigeCreateDto: PersoonCreateDto
     {
         public int Woonsituatie { get; set; }
         public int SamenstellingHuishouden { get; set; }

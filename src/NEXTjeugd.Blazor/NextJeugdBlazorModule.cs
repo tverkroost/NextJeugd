@@ -46,6 +46,7 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Saas.Host.Blazor.Server;
+using Volo.Abp.MultiTenancy;
 
 namespace NEXTjeugd.Blazor
 {
@@ -90,6 +91,11 @@ namespace NEXTjeugd.Blazor
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
+
+            Configure<AbpTenantResolveOptions>(options =>
+            {
+                options.AddDomainTenantResolver("{0}.nextjeugd.nl");
+            });
 
             ConfigureUrls(configuration);
             ConfigureBundles();

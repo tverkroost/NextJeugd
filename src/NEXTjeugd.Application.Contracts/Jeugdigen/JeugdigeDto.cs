@@ -1,9 +1,10 @@
+using NEXTjeugd.Personen;
 using System;
 using Volo.Abp.Application.Dtos;
 
 namespace NEXTjeugd.Jeugdigen
 {
-    public class JeugdigeDto : FullAuditedEntityDto<int>
+    public class JeugdigeDto : PersoonDto
     {
         public int Woonsituatie { get; set; }
         public int SamenstellingHuishouden { get; set; }
