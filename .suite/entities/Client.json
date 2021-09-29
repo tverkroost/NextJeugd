@@ -10,8 +10,8 @@
   "IsMultiTenant": true,
   "ShouldCreateUserInterface": true,
   "ShouldCreateBackend": true,
-  "ShouldAddMigration": true,
-  "ShouldUpdateDatabase": true,
+  "ShouldAddMigration": false,
+  "ShouldUpdateDatabase": false,
   "CreateTests": false,
   "Properties": [
     {

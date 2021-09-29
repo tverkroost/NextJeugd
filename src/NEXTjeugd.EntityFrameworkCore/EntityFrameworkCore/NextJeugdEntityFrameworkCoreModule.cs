@@ -1,3 +1,4 @@
+using NEXTjeugd.Clienten;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -45,6 +46,8 @@ namespace NEXTjeugd.EntityFrameworkCore
                 /* Remove "includeAllEntities: true" to create
                  * default repositories only for aggregate roots */
                 options.AddDefaultRepositories(includeAllEntities: true);
+                options.AddRepository<Client, Clienten.EfCoreClientRepository>();
+
             });
 
             Configure<AbpDbContextOptions>(options =>

@@ -1,4 +1,7 @@
-﻿using System;
+using NEXTjeugd.Permissions;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +43,7 @@ namespace NEXTjeugd.Blazor.Menus
                     order: 1
                 )
             );
-            
+
             /* Example nested menu definition:
 
             context.Menu.AddItem(
@@ -63,7 +66,7 @@ namespace NEXTjeugd.Blazor.Menus
             );
 
             */
-            
+
             context.Menu.SetSubItemOrder(SaasHostMenus.GroupName, 2);
 
             //Administration
@@ -88,6 +91,14 @@ namespace NEXTjeugd.Blazor.Menus
             //Administration->Settings
             administration.SetSubItemOrder(SettingManagementMenus.GroupName, 6);
 
+            context.Menu.AddItem(
+                new ApplicationMenuItem(
+                    NEXTjeugdMenus.Clienten,
+                    l["Menu:Clienten"],
+                    url: "/clienten",
+                    icon: "fa fa-file-alt",
+                    requiredPermissionName: NEXTjeugdPermissions.Clienten.Default)
+            );
             return Task.CompletedTask;
         }
     }

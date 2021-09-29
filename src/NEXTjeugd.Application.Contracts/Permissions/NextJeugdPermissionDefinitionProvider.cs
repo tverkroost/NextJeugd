@@ -16,6 +16,11 @@ namespace NEXTjeugd.Permissions
 
             //Define your own permissions here. Example:
             //myGroup.AddPermission(NEXTjeugdPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+            var clientPermission = myGroup.AddPermission(NEXTjeugdPermissions.Clienten.Default, L("Permission:Clienten"), MultiTenancySides.Tenant);
+            clientPermission.AddChild(NEXTjeugdPermissions.Clienten.Create, L("Permission:Create"));
+            clientPermission.AddChild(NEXTjeugdPermissions.Clienten.Edit, L("Permission:Edit"));
+            clientPermission.AddChild(NEXTjeugdPermissions.Clienten.Delete, L("Permission:Delete"));
         }
 
         private static LocalizableString L(string name)
