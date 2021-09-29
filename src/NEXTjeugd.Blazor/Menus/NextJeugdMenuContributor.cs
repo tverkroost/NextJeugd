@@ -93,11 +93,20 @@ namespace NEXTjeugd.Blazor.Menus
 
             context.Menu.AddItem(
                 new ApplicationMenuItem(
-                    NEXTjeugdMenus.Clienten,
-                    l["Menu:Clienten"],
-                    url: "/clienten",
+                    NEXTjeugdMenus.Jeugdigen,
+                    l["Menu:Jeugdigen"],
+                    url: "/Jeugdigen",
                     icon: "fa fa-file-alt",
-                    requiredPermissionName: NEXTjeugdPermissions.Clienten.Default)
+                    requiredPermissionName: NEXTjeugdPermissions.Jeugdigen.Default)
+            );
+
+            context.Menu.AddItem(
+                new ApplicationMenuItem(
+                    NEXTjeugdMenus.Personen,
+                    l["Menu:Personen"],
+                    url: "/personen",
+                    icon: "fa fa-file-alt",
+                    requiredPermissionName: NEXTjeugdPermissions.Personen.Default)
             );
             return Task.CompletedTask;
         }

@@ -1,4 +1,5 @@
 using System;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 using JetBrains.Annotations;
@@ -6,7 +7,7 @@ using Volo.Abp;
 
 namespace NEXTjeugd.Personen
 {
-    public abstract class Persoon : FullAuditedAggregateRoot<int>, IMultiTenant
+    public class Persoon : FullAuditedAggregateRoot<int>, IMultiTenant
     {
         public virtual Guid? TenantId { get; set; }
 
@@ -33,19 +34,15 @@ namespace NEXTjeugd.Personen
         [CanBeNull]
         public virtual string Geboorteland { get; set; }
 
-        [NotNull]
-        public virtual string Type { get; set; }
-
         public Persoon()
         {
 
         }
 
-        public Persoon(int id, string roepnaam, string voorletters, string tussenvoegsel, string achternaam, string bSN, DateTime geboortedatum, string geboorteland, string type, string geslacht = null)
+        public Persoon(int id, string roepnaam, string voorletters, string tussenvoegsel, string achternaam, string bSN, DateTime geboortedatum, string geboorteland, string geslacht = null)
         {
             Id = id;
             Check.NotNull(roepnaam, nameof(roepnaam));
-            Check.NotNull(type, nameof(type));
             Roepnaam = roepnaam;
             Voorletters = voorletters;
             Tussenvoegsel = tussenvoegsel;
@@ -53,7 +50,6 @@ namespace NEXTjeugd.Personen
             BSN = bSN;
             Geboortedatum = geboortedatum;
             Geboorteland = geboorteland;
-            Type = type;
             Geslacht = geslacht;
         }
     }

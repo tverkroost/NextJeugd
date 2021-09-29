@@ -1,3 +1,6 @@
+using NEXTjeugd.Jeugdigen;
+using NEXTjeugd.Personen;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -23,15 +26,17 @@ namespace NEXTjeugd.EntityFrameworkCore
     [ReplaceDbContext(typeof(IIdentityProDbContext))]
     [ReplaceDbContext(typeof(ISaasDbContext))]
     [ConnectionStringName("Default")]
-    public class NEXTjeugdDbContext : 
-        AbpDbContext<NEXTjeugdDbContext>, 
+    public class NEXTjeugdDbContext :
+        AbpDbContext<NEXTjeugdDbContext>,
         IIdentityProDbContext,
         ISaasDbContext
     {
+        public DbSet<Jeugdige> Jeugdigen { get; set; }
+        public DbSet<Persoon> Personen { get; set; }
         /* Add DbSet properties for your Aggregate Roots / Entities here. */
-        
+
         #region Entities from the modules
-        
+
         /* Notice: We only implemented IIdentityProDbContext and ISaasDbContext
          * and replaced them for this DbContext. This allows you to perform JOIN
          * queries for the entities of these modules over the repositories easily. You
@@ -42,7 +47,7 @@ namespace NEXTjeugd.EntityFrameworkCore
          * More info: Replacing a DbContext of a module ensures that the related module
          * uses this DbContext on runtime. Otherwise, it will use its own DbContext class.
          */
-        
+
         // Identity
         public DbSet<IdentityUser> Users { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
@@ -50,12 +55,12 @@ namespace NEXTjeugd.EntityFrameworkCore
         public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
         public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
         public DbSet<IdentityLinkUser> LinkUsers { get; set; }
-        
+
         // SaaS
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Edition> Editions { get; set; }
         public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
-        
+
         #endregion
 
         public NEXTjeugdDbContext(DbContextOptions<NEXTjeugdDbContext> options)
@@ -91,6 +96,9 @@ namespace NEXTjeugd.EntityFrameworkCore
             //    b.ConfigureByConvention(); //auto configure for the base class props
             //    //...
             //});
+
+            builder.Entity<Persoon>().HasDiscriminator<string>("Discriminator")
+                     .HasValue<Jeugdige>("Jeugdige");
         }
     }
 }

@@ -13,6 +13,5 @@ namespace NEXTjeugd.Personen
         public string Geslacht { get; set; }
         public DateTime Geboortedatum { get; set; }
         public string Geboorteland { get; set; }
-        public string Type { get; set; }
     }
 }

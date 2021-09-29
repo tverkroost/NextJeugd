@@ -16,7 +16,6 @@ namespace NEXTjeugd.Personen
         public DateTime? GeboortedatumMin { get; set; }
         public DateTime? GeboortedatumMax { get; set; }
         public string Geboorteland { get; set; }
-        public string Type { get; set; }
 
         public GetPersonenInput()
         {

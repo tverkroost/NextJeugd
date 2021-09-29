@@ -22,9 +22,9 @@ namespace NEXTjeugd.Permissions
             public const string Delete = Default + ".Delete";
         }
 
-        public class Clienten
+        public class Jeugdigen
         {
-            public const string Default = GroupName + ".Clienten";
+            public const string Default = GroupName + ".Jeugdigen";
             public const string Edit = Default + ".Edit";
             public const string Create = Default + ".Create";
             public const string Delete = Default + ".Delete";

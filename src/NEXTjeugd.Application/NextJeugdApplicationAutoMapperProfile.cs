@@ -1,7 +1,8 @@
+using NEXTjeugd.Jeugdigen;
+using NEXTjeugd.Personen;
 using System;
 using NEXTjeugd.Shared;
 using Volo.Abp.AutoMapper;
-using NEXTjeugd.Clienten;
 using AutoMapper;
 
 namespace NEXTjeugd
@@ -14,9 +15,13 @@ namespace NEXTjeugd
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
 
-            CreateMap<ClientCreateDto, Client>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
-            CreateMap<ClientUpdateDto, Client>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
-            CreateMap<Client, ClientDto>();
+            CreateMap<PersoonCreateDto, Persoon>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<PersoonUpdateDto, Persoon>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<Persoon, PersoonDto>();
+
+            CreateMap<JeugdigeCreateDto, Jeugdige>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<JeugdigeUpdateDto, Jeugdige>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<Jeugdige, JeugdigeDto>();
         }
     }
 }

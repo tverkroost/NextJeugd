@@ -1,5 +1,6 @@
-using NEXTjeugd.Clienten;
+using NEXTjeugd.Personen;
 using AutoMapper;
+using NEXTjeugd.Jeugdigen;
 
 namespace NEXTjeugd.Blazor
 {
@@ -9,7 +10,9 @@ namespace NEXTjeugd.Blazor
         {
             //Define your AutoMapper configuration here for the Blazor project.
 
-            CreateMap<ClientDto, ClientUpdateDto>();
+            CreateMap<JeugdigeDto, JeugdigeUpdateDto>();
+
+            CreateMap<PersoonDto, PersoonUpdateDto>();
         }
     }
 }

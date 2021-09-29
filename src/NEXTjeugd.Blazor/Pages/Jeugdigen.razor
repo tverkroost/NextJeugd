@@ -1,0 +1,355 @@
+@page "/jeugdigen"
+@attribute [Authorize(NEXTjeugdPermissions.Jeugdigen.Default)]
+@using NEXTjeugd.Jeugdigen
+@using NEXTjeugd.Localization
+@using NEXTjeugd.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Blazorise.Components
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using NEXTjeugd.Permissions
+@inject IJeugdigenAppService JeugdigenAppService
+@inject IStringLocalizer<NEXTjeugdResource> L
+@inject IAuthorizationService AuthorizationService
+@inject IUiMessageService UiMessageService
+@inject IObjectMapper ObjectMapper
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Jeugdigen"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="JeugdigeSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="JeugdigeSearchForm" Clicked="GetJeugdigenAsync">
+                        <Icon Name="IconName.Search" Class="mr-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="JeugdigeDto"
+                  Data="JeugdigeList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="JeugdigeDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="JeugdigeDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="JeugdigeDto"
+                                          Visible="@CanEditJeugdige"
+                                          Clicked="() => OpenEditJeugdigeModal(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="JeugdigeDto"
+                                          Visible="@CanDeleteJeugdige"
+                                          Clicked="() => DeleteJeugdigeAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="Woonsituatie"
+                      Caption="@L["Woonsituatie"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="SamenstellingHuishouden"
+                      Caption="@L["SamenstellingHuishouden"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="ToestemmingInformatiedeling"
+                      Caption="@L["ToestemmingInformatiedeling"]">
+                    <DisplayTemplate>
+                        @(context.ToestemmingInformatiedeling ? L["Yes"] : L["No"])
+                    </DisplayTemplate>
+              </DataGridColumn>
+
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="Notitie"
+                      Caption="@L["Notitie"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="Werkaantekening"
+                      Caption="@L["Werkaantekening"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="InzageEigenDossier"
+                      Caption="@L["InzageEigenDossier"]">
+                    <DisplayTemplate>
+                        @(context.InzageEigenDossier ? L["Yes"] : L["No"])
+                    </DisplayTemplate>
+              </DataGridColumn>
+
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="GeheimDossier"
+                      Caption="@L["GeheimDossier"]">
+                    <DisplayTemplate>
+                        @(context.GeheimDossier ? L["Yes"] : L["No"])
+                    </DisplayTemplate>
+              </DataGridColumn>
+
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="NaamHuisarts"
+                      Caption="@L["NaamHuisarts"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="JeugdigeDto"
+                      Field="EmailHuisarts"
+                      Caption="@L["EmailHuisarts"]">
+              </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateJeugdigeModal">
+    <ModalContent Centered="true">
+        <Form id="CreateJeugdigeForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewJeugdige"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateJeugdigeModal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewJeugdigeValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@NewJeugdige"
+                            ValidateOnLoad="false">
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Woonsituatie"]</FieldLabel>
+                            <NumericEdit TValue="int" @bind-Value="@NewJeugdige.Woonsituatie" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                             </NumericEdit>
+                        </Field>
+                     </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["SamenstellingHuishouden"]</FieldLabel>
+                            <NumericEdit TValue="int" @bind-Value="@NewJeugdige.SamenstellingHuishouden" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                             </NumericEdit>
+                        </Field>
+                     </Validation>
+
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@NewJeugdige.ToestemmingInformatiedeling">@L["ToestemmingInformatiedeling"]</Check>
+                    </Field>
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Notitie"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewJeugdige.Notitie" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Werkaantekening"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewJeugdige.Werkaantekening" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@NewJeugdige.InzageEigenDossier">@L["InzageEigenDossier"]</Check>
+                    </Field>
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@NewJeugdige.GeheimDossier">@L["GeheimDossier"]</Check>
+                    </Field>
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["NaamHuisarts"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewJeugdige.NaamHuisarts" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["EmailHuisarts"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewJeugdige.EmailHuisarts" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateJeugdigeModal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateJeugdigeForm" Clicked="CreateJeugdigeAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditJeugdigeModal">
+    <ModalContent Centered="true">
+        <Form id="EditJeugdigeForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditJeugdigeModal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingJeugdigeValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@EditingJeugdige"
+                            ValidateOnLoad="false">
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Woonsituatie"]</FieldLabel>
+                            <NumericEdit TValue="int" @bind-Value="@EditingJeugdige.Woonsituatie" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                             </NumericEdit>
+                        </Field>
+                     </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["SamenstellingHuishouden"]</FieldLabel>
+                            <NumericEdit TValue="int" @bind-Value="@EditingJeugdige.SamenstellingHuishouden" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                             </NumericEdit>
+                        </Field>
+                     </Validation>
+
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@EditingJeugdige.ToestemmingInformatiedeling">@L["ToestemmingInformatiedeling"]</Check>
+                    </Field>
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Notitie"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingJeugdige.Notitie" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Werkaantekening"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingJeugdige.Werkaantekening" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@EditingJeugdige.InzageEigenDossier">@L["InzageEigenDossier"]</Check>
+                    </Field>
+
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@EditingJeugdige.GeheimDossier">@L["GeheimDossier"]</Check>
+                    </Field>
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["NaamHuisarts"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingJeugdige.NaamHuisarts" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["EmailHuisarts"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingJeugdige.EmailHuisarts" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditJeugdigeModal">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateJeugdigeForm" Clicked="UpdateJeugdigeAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

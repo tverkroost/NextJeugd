@@ -113,11 +113,6 @@
                       Caption="@L["Geboorteland"]">
               </DataGridColumn>
 
-              <DataGridColumn TItem="PersoonDto"
-                      Field="Type"
-                      Caption="@L["Type"]">
-              </DataGridColumn>
-
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -225,18 +220,6 @@
                         <Field>
                             <FieldLabel>@L["Geboorteland"]</FieldLabel>
                             <TextEdit @bind-Text="@NewPersoon.Geboorteland" >
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-
-
-                    <Validation>
-                        <Field>
-                            <FieldLabel>@L["Type"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Type" >
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -360,18 +343,6 @@
                         <Field>
                             <FieldLabel>@L["Geboorteland"]</FieldLabel>
                             <TextEdit @bind-Text="@EditingPersoon.Geboorteland" >
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-
-
-                    <Validation>
-                        <Field>
-                            <FieldLabel>@L["Type"] *</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Type" >
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>

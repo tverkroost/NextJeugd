@@ -19,7 +19,6 @@ namespace NEXTjeugd.Personen
             DateTime? geboortedatumMin = null,
             DateTime? geboortedatumMax = null,
             string geboorteland = null,
-            string type = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -37,7 +36,6 @@ namespace NEXTjeugd.Personen
             DateTime? geboortedatumMin = null,
             DateTime? geboortedatumMax = null,
             string geboorteland = null,
-            string type = null,
             CancellationToken cancellationToken = default);
     }
 }

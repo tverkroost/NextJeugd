@@ -5,6 +5,8 @@ namespace NEXTjeugd.Blazor.Menus
         private const string Prefix = "NEXTjeugd";
         public const string Home = Prefix + ".Home";
 
-        public const string Clienten = Prefix + ".Clienten";
+        public const string Jeugdigen = Prefix + ".Jeugdigen";
+
+        public const string Personen = Prefix + ".Personen";
     }
 }

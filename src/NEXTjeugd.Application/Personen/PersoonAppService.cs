@@ -26,8 +26,8 @@ namespace NEXTjeugd.Personen
 
         public virtual async Task<PagedResultDto<PersoonDto>> GetListAsync(GetPersonenInput input)
         {
-            var totalCount = await _persoonRepository.GetCountAsync(input.FilterText, input.Roepnaam, input.Voorletters, input.Tussenvoegsel, input.Achternaam, input.BSN, input.Geslacht, input.GeboortedatumMin, input.GeboortedatumMax, input.Geboorteland, input.Type);
-            var items = await _persoonRepository.GetListAsync(input.FilterText, input.Roepnaam, input.Voorletters, input.Tussenvoegsel, input.Achternaam, input.BSN, input.Geslacht, input.GeboortedatumMin, input.GeboortedatumMax, input.Geboorteland, input.Type, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _persoonRepository.GetCountAsync(input.FilterText, input.Roepnaam, input.Voorletters, input.Tussenvoegsel, input.Achternaam, input.BSN, input.Geslacht, input.GeboortedatumMin, input.GeboortedatumMax, input.Geboorteland);
+            var items = await _persoonRepository.GetListAsync(input.FilterText, input.Roepnaam, input.Voorletters, input.Tussenvoegsel, input.Achternaam, input.BSN, input.Geslacht, input.GeboortedatumMin, input.GeboortedatumMax, input.Geboorteland, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<PersoonDto>
             {
