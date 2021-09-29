@@ -69,6 +69,21 @@
     "MaxWoonsituatie": "Max Woonsituatie",
     "MaxSamenstellingHuishouden": "Max Samenstelling Huishouden",
     "Menu:Jeugdigen": "Jeugdigen",
-    "Menu:Personen": "Personen"
+    "Menu:Personen": "Personen",
+    "Permission:Adressen": "Adressen",
+    "Adressen": "Adressen",
+    "NewAdres": "New Adres",
+    "Postcode": "Postcode",
+    "Straatnaam": "Straatnaam",
+    "Huisnummer": "Huisnummer",
+    "Woonplaats": "Woonplaats",
+    "Stadsdeel": "Stadsdeel",
+    "Begindatum": "Begindatum",
+    "Einddatum": "Einddatum",
+    "Geheim": "Geheim",
+    "MinBegindatum": "Min Begindatum",
+    "MaxBegindatum": "Max Begindatum",
+    "Menu:Adressen": "Adressen",
+    "Adres": "Adres"
   }
 }

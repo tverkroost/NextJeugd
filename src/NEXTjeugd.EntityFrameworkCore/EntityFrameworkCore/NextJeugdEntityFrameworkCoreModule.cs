@@ -1,15 +1,6 @@
 using NEXTjeugd.Personen;
-using NEXTjeugd.Personen;
-using NEXTjeugd.Personen;
+using NEXTjeugd.Adressen;
 using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Personen;
-using NEXTjeugd.Personen;
-using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Jeugdigen;
-using NEXTjeugd.Personen;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -59,29 +50,8 @@ namespace NEXTjeugd.EntityFrameworkCore
                 options.AddDefaultRepositories(includeAllEntities: true);
 
                 options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
                 options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
-                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
-                options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Jeugdige, Jeugdigen.EfCoreJeugdigeRepository>();
-
-                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
-                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
-                options.AddRepository<Persoon, Personen.EfCorePersoonRepository>();
-
+                options.AddRepository<Adres, Adressen.EfCoreAdresRepository>();
             });
 
             Configure<AbpDbContextOptions>(options =>

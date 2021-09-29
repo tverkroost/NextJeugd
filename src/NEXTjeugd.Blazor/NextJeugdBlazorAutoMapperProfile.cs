@@ -1,3 +1,4 @@
+using NEXTjeugd.Adressen;
 using NEXTjeugd.Personen;
 using AutoMapper;
 using NEXTjeugd.Jeugdigen;
@@ -13,6 +14,8 @@ namespace NEXTjeugd.Blazor
             CreateMap<JeugdigeDto, JeugdigeUpdateDto>();
 
             CreateMap<PersoonDto, PersoonUpdateDto>();
+
+            CreateMap<AdresDto, AdresUpdateDto>();
         }
     }
 }

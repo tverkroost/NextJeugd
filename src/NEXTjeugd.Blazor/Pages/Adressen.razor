@@ -1,6 +1,6 @@
-@page "/personen"
-@attribute [Authorize(NEXTjeugdPermissions.Personen.Default)]
-@using NEXTjeugd.Personen
+@page "/adressen"
+@attribute [Authorize(NEXTjeugdPermissions.Adressen.Default)]
+@using NEXTjeugd.Adressen
 @using NEXTjeugd.Localization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Localization
@@ -9,28 +9,30 @@
 @using Volo.Abp.AspNetCore.Components.Messages
 @using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
 @using NEXTjeugd.Permissions
-@inject IPersonenAppService PersonenAppService
+@inject IAdressenAppService AdressenAppService
 @inject IStringLocalizer<NEXTjeugdResource> L
 @inject IAuthorizationService AuthorizationService
 @inject IUiMessageService UiMessageService
 @inject IObjectMapper ObjectMapper
 
 @* ************************* PAGE HEADER ************************* *@
-<PageHeader Title="@L[" Personen"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+<PageHeader Title="@L["Adressen"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
 </PageHeader>
 
 @* ************************* SEARCH ************************* *@
 <Card>
     <CardBody>
-        <Form id="PersoonSearchForm" class="mb-3">
+        <Form id="AdresSearchForm" class="mb-3">
             <Addons>
                 <Addon AddonType="AddonType.Body">
-                    <TextEdit @bind-Text="@Filter.FilterText" Autofocus="true" Placeholder="@L[" Search"]">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
                     </TextEdit>
                 </Addon>
                 <Addon AddonType="AddonType.End">
-                    <SubmitButton Form="PersoonSearchForm" Clicked="GetPersonenAsync">
-                        <Icon Name="IconName.Search" Class="mr-1" />@L["Search"]
+                    <SubmitButton Form="AdresSearchForm" Clicked="GetAdressenAsync">
+                        <Icon Name="IconName.Search" Class="mr-1"></Icon>@L["Search"]
                     </SubmitButton>
                 </Addon>
             </Addons>
@@ -41,63 +43,66 @@
 @* ************************* DATA GRID ************************* *@
 <Card>
     <CardBody>
-        <DataGrid TItem="PersoonDto"
-                  Data="PersoonList"
+        <DataGrid TItem="AdresDto"
+                  Data="AdresList"
                   ReadData="OnDataGridReadAsync"
                   TotalItems="TotalCount"
                   ShowPager="true"
                   Responsive="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="PersoonDto" @ref="@EntityActionsColumn">
+                <DataGridEntityActionsColumn TItem="AdresDto" @ref="@EntityActionsColumn">
                     <DisplayTemplate>
-                        <EntityActions TItem="PersoonDto" EntityActionsColumn="@EntityActionsColumn">
-                            <EntityAction TItem="PersoonDto"
-                                          Visible="@CanEditPersoon"
-                                          Clicked="() => OpenEditPersoonModal(context)"
+                        <EntityActions TItem="AdresDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="AdresDto"
+                                          Visible="@CanEditAdres"
+                                          Clicked="() => OpenEditAdresModal(context)"
                                           Text="@L["Edit"]"></EntityAction>
-                            <EntityAction TItem="PersoonDto"
-                                          Visible="@CanDeletePersoon"
-                                          Clicked="() => DeletePersoonAsync(context)"
+                            <EntityAction TItem="AdresDto"
+                                          Visible="@CanDeleteAdres"
+                                          Clicked="() => DeleteAdresAsync(context)"
                                           ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
                                           Text="@L["Delete"]"></EntityAction>
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Roepnaam"
-                                Caption="@L["Roepnaam"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Postcode"
+                                Caption="@L["Postcode"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Voorletters"
-                                Caption="@L["Voorletters"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Straatnaam"
+                                Caption="@L["Straatnaam"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Tussenvoegsel"
-                                Caption="@L["Tussenvoegsel"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Huisnummer"
+                                Caption="@L["Huisnummer"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Achternaam"
-                                Caption="@L["Achternaam"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Woonplaats"
+                                Caption="@L["Woonplaats"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="BSN"
-                                Caption="@L["BSN"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Stadsdeel"
+                                Caption="@L["Stadsdeel"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Geslacht"
-                                Caption="@L["Geslacht"]">
-                </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Geboortedatum"
-                                Caption="@L["Geboortedatum"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Begindatum"
+                                Caption="@L["Begindatum"]">
                     <DisplayTemplate>
-                        @context.Geboortedatum.ToShortDateString()
+                        @context.Begindatum.ToShortDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="PersoonDto"
-                                Field="Geboorteland"
-                                Caption="@L["Geboorteland"]">
+                <DataGridColumn TItem="AdresDto"
+                                Field="Einddatum"
+                                Caption="@L["Einddatum"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="AdresDto"
+                                Field="Geheim"
+                                Caption="@L["Geheim"]">
+                    <DisplayTemplate>
+                        @(context.Geheim ? L["Yes"] : L["No"])
+                    </DisplayTemplate>
                 </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
@@ -105,19 +110,23 @@
 </Card>
 
 @* ************************* CREATE MODAL ************************* *@
-<Modal @ref="CreatePersoonModal">
+<Modal @ref="CreateAdresModal">
     <ModalContent Centered="true">
-        <Form id="CreatePersoonForm">
+        <Form id="CreateAdresForm">
             <ModalHeader>
-                <ModalTitle>@L["NewPersoon"]</ModalTitle>
-                <CloseButton Clicked="CloseCreatePersoonModal" />
+                <ModalTitle>@L["NewAdres"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateAdresModal" />
             </ModalHeader>
             <ModalBody>
-                <Validations @ref="@NewPersoonValidations" Mode="ValidationMode.Auto" Model="@NewPersoon" ValidateOnLoad="false">
+                <Validations @ref="@NewAdresValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@NewAdres"
+                             ValidateOnLoad="false">
+
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Roepnaam"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Roepnaam">
+                            <FieldLabel>@L["Postcode"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Postcode">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -126,8 +135,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Voorletters"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Voorletters">
+                            <FieldLabel>@L["Straatnaam"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Straatnaam">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -136,8 +145,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Tussenvoegsel"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Tussenvoegsel">
+                            <FieldLabel>@L["Huisnummer"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Huisnummer">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -146,8 +155,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Achternaam"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Achternaam">
+                            <FieldLabel>@L["Woonplaats"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Woonplaats">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -156,8 +165,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["BSN"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.BSN">
+                            <FieldLabel>@L["Stadsdeel"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Stadsdeel">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -166,18 +175,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Geslacht"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Geslacht">
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-                    <Validation>
-                        <Field>
-                            <FieldLabel>@L["Geboortedatum"]</FieldLabel>
-                            <DateEdit TValue="DateTime" @bind-Date="@NewPersoon.Geboortedatum">
+                            <FieldLabel>@L["Begindatum"]</FieldLabel>
+                            <DateEdit TValue="DateTime" @bind-Date="@NewAdres.Begindatum">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -186,40 +185,48 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Geboorteland"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewPersoon.Geboorteland">
+                            <FieldLabel>@L["Einddatum"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewAdres.Einddatum">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
                             </TextEdit>
                         </Field>
                     </Validation>
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@NewAdres.Geheim">@L["Geheim"]</Check>
+                    </Field>
                 </Validations>
             </ModalBody>
             <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="CloseCreatePersoonModal">
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateAdresModal">
                     @L["Cancel"]
                 </Button>
-                <SubmitButton Form="CreatePersoonForm" Clicked="CreatePersoonAsync" />
+                <SubmitButton Form="CreateAdresForm" Clicked="CreateAdresAsync" />
             </ModalFooter>
         </Form>
     </ModalContent>
 </Modal>
 
 @* ************************* EDIT MODAL ************************* *@
-<Modal @ref="EditPersoonModal">
+<Modal @ref="EditAdresModal">
     <ModalContent Centered="true">
-        <Form id="EditPersoonForm">
+        <Form id="EditAdresForm">
             <ModalHeader>
                 <ModalTitle>@L["Update"]</ModalTitle>
-                <CloseButton Clicked="CloseEditPersoonModal" />
+                <CloseButton Clicked="CloseEditAdresModal" />
             </ModalHeader>
             <ModalBody>
-                <Validations @ref="@EditingPersoonValidations" Mode="ValidationMode.Auto" Model="@EditingPersoon" ValidateOnLoad="false">
+                <Validations @ref="@EditingAdresValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@EditingAdres"
+                             ValidateOnLoad="false">
+
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Roepnaam"] *</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Roepnaam">
+                            <FieldLabel>@L["Postcode"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Postcode">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -228,8 +235,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Voorletters"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Voorletters">
+                            <FieldLabel>@L["Straatnaam"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Straatnaam">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -238,8 +245,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Tussenvoegsel"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Tussenvoegsel">
+                            <FieldLabel>@L["Huisnummer"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Huisnummer">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -248,8 +255,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Achternaam"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Achternaam">
+                            <FieldLabel>@L["Woonplaats"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Woonplaats">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -258,8 +265,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["BSN"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.BSN">
+                            <FieldLabel>@L["Stadsdeel"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Stadsdeel">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -268,18 +275,8 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Geslacht"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Geslacht">
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-                    <Validation>
-                        <Field>
-                            <FieldLabel>@L["Geboortedatum"]</FieldLabel>
-                            <DateEdit TValue="DateTime" @bind-Date="@EditingPersoon.Geboortedatum">
+                            <FieldLabel>@L["Begindatum"]</FieldLabel>
+                            <DateEdit TValue="DateTime" @bind-Date="@EditingAdres.Begindatum">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -288,21 +285,25 @@
                     </Validation>
                     <Validation>
                         <Field>
-                            <FieldLabel>@L["Geboorteland"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingPersoon.Geboorteland">
+                            <FieldLabel>@L["Einddatum"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingAdres.Einddatum">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
                             </TextEdit>
                         </Field>
                     </Validation>
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@EditingAdres.Geheim">@L["Geheim"]</Check>
+                    </Field>
                 </Validations>
             </ModalBody>
             <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="CloseEditPersoonModal">
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditAdresModal">
                     @L["Cancel"]
                 </Button>
-                <SubmitButton Form="CreatePersoonForm" Clicked="UpdatePersoonAsync" />
+                <SubmitButton Form="CreateAdresForm" Clicked="UpdateAdresAsync" />
             </ModalFooter>
         </Form>
     </ModalContent>

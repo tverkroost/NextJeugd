@@ -1,12 +1,12 @@
 {
-  "Id": "f891a030-6c2b-4087-ac88-ede1a08be5ab",
-  "Name": "Persoon",
-  "OriginalName": "Persoon",
-  "NamePlural": "Personen",
-  "DatabaseTableName": "Personen",
-  "Namespace": "Personen",
+  "Id": "2463f53f-6e4e-4ed8-911e-705099fd0fab",
+  "Name": "Adres",
+  "OriginalName": "Adres",
+  "NamePlural": "Adressen",
+  "DatabaseTableName": "Adressen",
+  "Namespace": "Adressen",
   "BaseClass": "FullAuditedAggregateRoot",
-  "PrimaryKeyType": "int",
+  "PrimaryKeyType": "Guid",
   "IsMultiTenant": true,
   "ShouldCreateUserInterface": true,
   "ShouldCreateBackend": true,
@@ -15,25 +15,8 @@
   "CreateTests": false,
   "Properties": [
     {
-      "Id": "69a02ce8-3f90-4f96-b0bd-6ae0607deb1e",
-      "Name": "Roepnaam",
-      "Type": "string",
-      "EnumType": "",
-      "EnumNamespace": "",
-      "EnumAngularImport": "shared/enums",
-      "IsNullable": false,
-      "IsRequired": true,
-      "MinLength": null,
-      "MaxLength": null,
-      "SortOrder": 0,
-      "SortType": 0,
-      "Regex": "",
-      "EmailValidation": false,
-      "EnumValues": null
-    },
-    {
-      "Id": "620e8818-a873-41d1-90b5-8be330e8cfd4",
-      "Name": "Voorletters",
+      "Id": "8a570f8e-5c60-4206-b04c-79546f94b969",
+      "Name": "Postcode",
       "Type": "string",
       "EnumType": "",
       "EnumNamespace": "",
@@ -49,8 +32,8 @@
       "EnumValues": null
     },
     {
-      "Id": "dd550f3d-39fe-4ef3-b05a-daa1c9d1633e",
-      "Name": "Tussenvoegsel",
+      "Id": "d7793d78-3b40-442a-b021-8e694a1dd9db",
+      "Name": "Straatnaam",
       "Type": "string",
       "EnumType": "",
       "EnumNamespace": "",
@@ -66,8 +49,8 @@
       "EnumValues": null
     },
     {
-      "Id": "44a5aceb-621d-4409-b974-0eac97aec778",
-      "Name": "Achternaam",
+      "Id": "b2ef57d1-9f8a-4e7c-9c61-4697d4ebd10f",
+      "Name": "Huisnummer",
       "Type": "string",
       "EnumType": "",
       "EnumNamespace": "",
@@ -83,8 +66,8 @@
       "EnumValues": null
     },
     {
-      "Id": "3c41753e-ac90-46c9-ae91-30218705de88",
-      "Name": "BSN",
+      "Id": "9b236e8f-7e09-417f-b154-6efb9799f7db",
+      "Name": "Woonplaats",
       "Type": "string",
       "EnumType": "",
       "EnumNamespace": "",
@@ -100,13 +83,13 @@
       "EnumValues": null
     },
     {
-      "Id": "4b73139f-bfd5-44b3-b7f6-379ea88cf50d",
-      "Name": "Geslacht",
+      "Id": "ccb1af94-99d2-4301-9849-a95b36901708",
+      "Name": "Stadsdeel",
       "Type": "string",
-      "EnumType": "GeslachtEnum",
-      "EnumNamespace": "Enums",
-      "EnumAngularImport": "shared/enums/geslacht-enum",
-      "IsNullable": true,
+      "EnumType": "",
+      "EnumNamespace": "",
+      "EnumAngularImport": "shared/enums",
+      "IsNullable": false,
       "IsRequired": false,
       "MinLength": null,
       "MaxLength": null,
@@ -117,8 +100,8 @@
       "EnumValues": null
     },
     {
-      "Id": "936e39d4-d342-4407-8db1-0c0ed54c6196",
-      "Name": "Geboortedatum",
+      "Id": "d2c9e473-88a0-4990-8c15-8f8cdb07735c",
+      "Name": "Begindatum",
       "Type": "DateTime",
       "EnumType": "",
       "EnumNamespace": "",
@@ -134,9 +117,26 @@
       "EnumValues": null
     },
     {
-      "Id": "00ce4c29-66b8-439c-a2d5-80e91f4d58fa",
-      "Name": "Geboorteland",
+      "Id": "8eb05a4d-d4c7-43c7-a6bd-ff1bda4d08f9",
+      "Name": "Einddatum",
       "Type": "string",
+      "EnumType": "",
+      "EnumNamespace": "",
+      "EnumAngularImport": "shared/enums",
+      "IsNullable": false,
+      "IsRequired": false,
+      "MinLength": null,
+      "MaxLength": null,
+      "SortOrder": 0,
+      "SortType": 0,
+      "Regex": "",
+      "EmailValidation": false,
+      "EnumValues": null
+    },
+    {
+      "Id": "1127bbe1-b8e3-4090-8d28-068459941873",
+      "Name": "Geheim",
+      "Type": "bool",
       "EnumType": "",
       "EnumNamespace": "",
       "EnumAngularImport": "shared/enums",
@@ -151,22 +151,6 @@
       "EnumValues": null
     }
   ],
-  "NavigationProperties": [
-    {
-      "Namespace": "NEXTjeugd.Adressen",
-      "EntityName": "Adres",
-      "EntityNameWithDuplicationNumber": "Adres",
-      "EntitySetNameWithDuplicationNumber": "Adressen",
-      "EntitySetName": "Adressen",
-      "DtoNamespace": "NEXTjeugd.Adressen",
-      "DtoEntityName": "AdresDto",
-      "Type": "int",
-      "Name": "AdresId",
-      "ReferencePropertyName": "Adres",
-      "DisplayProperty": "Postcode",
-      "UiPickType": "Dropdown",
-      "IsRequired": false
-    }
-  ],
-  "PhysicalFileName": "Persoon.json"
+  "NavigationProperties": [],
+  "PhysicalFileName": "Adres.json"
 }

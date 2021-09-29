@@ -29,5 +29,13 @@ namespace NEXTjeugd.Permissions
             public const string Create = Default + ".Create";
             public const string Delete = Default + ".Delete";
         }
+
+        public class Adressen
+        {
+            public const string Default = GroupName + ".Adressen";
+            public const string Edit = Default + ".Edit";
+            public const string Create = Default + ".Create";
+            public const string Delete = Default + ".Delete";
+        }
     }
 }

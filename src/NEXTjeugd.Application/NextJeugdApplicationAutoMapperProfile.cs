@@ -1,7 +1,6 @@
+using NEXTjeugd.Adressen;
 using NEXTjeugd.Jeugdigen;
 using NEXTjeugd.Personen;
-using System;
-using NEXTjeugd.Shared;
 using Volo.Abp.AutoMapper;
 using AutoMapper;
 
@@ -22,6 +21,10 @@ namespace NEXTjeugd
             CreateMap<JeugdigeCreateDto, Jeugdige>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
             CreateMap<JeugdigeUpdateDto, Jeugdige>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
             CreateMap<Jeugdige, JeugdigeDto>();
+
+            CreateMap<AdresCreateDto, Adres>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<AdresUpdateDto, Adres>().IgnoreFullAuditedObjectProperties().Ignore(x => x.ExtraProperties).Ignore(x => x.ConcurrencyStamp).Ignore(x => x.Id).Ignore(x => x.TenantId);
+            CreateMap<Adres, AdresDto>();
         }
     }
 }
